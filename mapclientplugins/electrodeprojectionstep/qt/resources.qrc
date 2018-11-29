@@ -1,0 +1,6 @@
+
+<RCC>
+  <qresource prefix="electrodeprojectionstep">
+    <file>images/fitting.png</file>
+  </qresource>
+</RCC>
