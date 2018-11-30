@@ -13,8 +13,6 @@ from sparc.electrodeprojection.meshprojection import MeshProjection
 def _read_region_description(region, region_description):
     stream_information = region.createStreaminformationRegion()
     memory_resource = stream_information.createStreamresourceMemoryBuffer(region_description['elements'])
-    # with open('elements.ex', 'w') as f:
-    #     f.write(region_description['elements'])
     stream_information.setResourceDomainTypes(memory_resource, Field.DOMAIN_TYPE_MESH3D)
 
     for key in region_description:
@@ -23,15 +21,12 @@ def _read_region_description(region, region_description):
                 time = key
             else:
                 time = float(key)
+
             memory_resource = stream_information.createStreamresourceMemoryBuffer(region_description[key])
             stream_information.setResourceDomainTypes(memory_resource, Field.DOMAIN_TYPE_NODES)
             stream_information.setResourceAttributeReal(memory_resource, StreaminformationRegion.ATTRIBUTE_TIME, time)
-            # with open('nodes_{0}.ex'.format(key), 'w') as f:
-            #     f.write(region_description[key])
+
     region.read(stream_information)
-    what = os.path.join(r'C:\Users\hsor001\Desktop\tmp', 'everything.ex')
-    print(what)
-    region.writeFile(what)
 
 
 def _read_scene_description(scene, scene_description):
@@ -142,18 +137,24 @@ class ElectrodeProjectionModel(object):
         index = 1
         field_module = self._region.getFieldmodule()
         field_module.beginChange()
-        electrode_count = len(self._electrode_positions_on_plane.keys()) - 1
-        self._projected_electrode_positions = [[]] * electrode_count
+        self._projected_electrode_positions = {}
         for electrode_key in self._electrode_positions_on_plane:
             if electrode_key != 'time_array':
                 point_locations = self._electrode_positions_on_plane[electrode_key]
                 projected_point = self._mesh_projection.project_point(point_locations[index])
-                self._projected_electrode_positions[int(electrode_key) - 1] = projected_point
+                self._projected_electrode_positions[electrode_key] = projected_point
 
         field_module.endChange()
 
-    def get_projected_electrode_positions(self):
-        return self._projected_electrode_positions
+    def _get_coordinates(self, element, xi_location, time):
+        field_module = self._region.getFieldmodule()
+        field_cache = field_module.createFieldcache()
+        field_cache.setMeshLocation(element, xi_location)
+        field_cache.setTime(time)
+        coordinates_field = field_module.findFieldByName('coordinates')
+        _, location = coordinates_field.evaluateReal(field_cache, 3)
+
+        return location
 
     def get_context(self):
         return self._context
@@ -183,10 +184,24 @@ class ElectrodeProjectionModel(object):
         self._mesh_projection.set_z_scale_factor(scale_factor)
 
     def get_electrode_positions_description(self):
-        pass
+        time_array = self._electrode_positions_on_plane['time_array']
+        electrode_positions = {'time_array': time_array}
+        for electrode_key in self._projected_electrode_positions:
+            element, xi_coordinates = self._projected_electrode_positions[electrode_key]
+            locations = []
+            for time in time_array:
+                location = self._get_coordinates(element, xi_coordinates, time)
+                locations.append(location)
+
+            electrode_positions[electrode_key] = locations
+
+        return electrode_positions
 
     def clear_projected_points(self):
         self._mesh_projection.clear_projected_points()
+
+    def done(self):
+        pass
 
 
 def _create_data_point(coordinate_field, location):

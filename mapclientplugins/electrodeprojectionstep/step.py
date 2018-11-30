@@ -36,11 +36,11 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#2d_image_dimension'))
         self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#provides',
-                      'http://physiomeproject.org/workflow/1.0/rdf-schema#electrode_scaffold_positions'))
+                      'http://physiomeproject.org/workflow/1.0/rdf-schema#time_based_electrode_scaffold_positions'))
         # Port data:
         self._electrode_positions_on_plane = None # electrode_positions
         self._scaffold_description = None # scaffold_description
-        self._electrode_positions_projected = None # electrode_scaffold_positions
+        self._electrode_positions_projected = None # time_based_electrode_scaffold_positions
         self._image_dimensions = None  # 2d_image_dimension
         # Config:
         self._config = {'identifier': ''}
@@ -59,17 +59,13 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
             self._scaffold_description,
             self._electrode_positions_on_plane,
             self._image_dimensions)
-        # model.project()
-        # self._electrode_positions_projected = model.get_projected_electrode_positions()
 
-        # print('answer', self._electrode_positions_projected)
         self._view = ElectrodeProjectionWidget(self._model)
-        # self._view.setWindowFlags(QtCore.Qt.Widget)
-        self._view.register_done_execution(self._myDoneExecution)
+        self._view.register_done_execution(self._my_done_execution)
         self._setCurrentWidget(self._view)
 
-    def _myDoneExecution(self):
-        self._portData0 = self._model.get_electrode_positions_description()
+    def _my_done_execution(self):
+        self._electrode_positions_projected = self._model.get_electrode_positions_description()
         self._model.done()
         self._view = None
         self._model = None
@@ -99,7 +95,7 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
 
         :param index: Index of the port to return.
         """
-        return self._electrode_positions_projected # electrode_scaffold_positions
+        return self._electrode_positions_projected # time_based_electrode_scaffold_positions
 
     def configure(self):
         """
