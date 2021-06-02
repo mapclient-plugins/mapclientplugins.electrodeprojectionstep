@@ -2,7 +2,7 @@
 import numpy as np
 from scipy.optimize import minimize
 
-from PySide import QtGui
+from PySide2 import QtWidgets
 
 from opencmiss.zinc.status import OK as ZINC_OK
 from opencmiss.zinc.node import Node
@@ -15,7 +15,7 @@ PLAY_TEXT = 'Play'
 STOP_TEXT = 'Stop'
 
 
-class ElectrodeProjectionWidget(QtGui.QWidget):
+class ElectrodeProjectionWidget(QtWidgets.QWidget):
 
     def __init__(self, model, parent=None):
         super(ElectrodeProjectionWidget, self).__init__(parent)
