@@ -145,7 +145,7 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
         """
         self._config.update(json.loads(string))
 
-        d = ConfigureDialog()
+        d = ConfigureDialog(self._main_window)
         d.identifierOccursCount = self._identifierOccursCount
         d.setConfig(self._config)
         self._configured = d.validate()
