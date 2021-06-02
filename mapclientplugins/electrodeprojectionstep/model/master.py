@@ -213,4 +213,3 @@ def _create_data_point(coordinate_field, location):
     field_cache = field_module.createFieldcache()
     field_cache.setNode(node)
     coordinate_field.assignReal(field_cache, location)
-

@@ -1,4 +1,3 @@
-
 """
 MAP Client Plugin Step
 """
@@ -20,10 +19,10 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
 
     def __init__(self, location):
         super(ElectrodeProjectionStep, self).__init__('Electrode Projection', location)
-        self._configured = False # A step cannot be executed until it has been configured.
+        self._configured = False  # A step cannot be executed until it has been configured.
         self._category = 'Fitting'
         # Add any other initialisation code here:
-        self._icon =  QtGui.QImage(':/electrodeprojectionstep/images/fitting.png')
+        self._icon = QtGui.QImage(':/electrodeprojectionstep/images/fitting.png')
         # Ports:
         self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
@@ -38,9 +37,9 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#provides',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#time_based_electrode_scaffold_positions'))
         # Port data:
-        self._electrode_positions_on_plane = None # electrode_positions
-        self._scaffold_description = None # scaffold_description
-        self._electrode_positions_projected = None # time_based_electrode_scaffold_positions
+        self._electrode_positions_on_plane = None  # electrode_positions
+        self._scaffold_description = None  # scaffold_description
+        self._electrode_positions_projected = None  # time_based_electrode_scaffold_positions
         self._image_dimensions = None  # 2d_image_dimension
         # Config:
         self._config = {'identifier': ''}
@@ -81,9 +80,9 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
         :param dataIn: The data to set for the port at the given index.
         """
         if index == 0:
-            self._electrode_positions_on_plane = dataIn # electrode_positions
+            self._electrode_positions_on_plane = dataIn  # electrode_positions
         elif index == 1:
-            self._scaffold_description = dataIn # scaffold_parameters
+            self._scaffold_description = dataIn  # scaffold_parameters
         elif index == 2:
             self._image_dimensions = dataIn  # 2d_image_dimension
 
@@ -95,7 +94,7 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
 
         :param index: Index of the port to return.
         """
-        return self._electrode_positions_projected # time_based_electrode_scaffold_positions
+        return self._electrode_positions_projected  # time_based_electrode_scaffold_positions
 
     def configure(self):
         """
@@ -149,5 +148,3 @@ class ElectrodeProjectionStep(WorkflowStepMountPoint):
         d.identifierOccursCount = self._identifierOccursCount
         d.setConfig(self._config)
         self._configured = d.validate()
-
-
