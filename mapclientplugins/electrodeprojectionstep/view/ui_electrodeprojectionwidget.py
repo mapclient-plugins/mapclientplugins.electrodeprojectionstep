@@ -14,7 +14,7 @@ from PySide2.QtWidgets import *
 
 from opencmiss.utils.zinc.widgets.basesceneviewerwidget import BaseSceneviewerWidget
 
-from  . import resources_rc
+from .. import resources_rc
 
 class Ui_ElectrodeProjectionWidget(object):
     def setupUi(self, ElectrodeProjectionWidget):
