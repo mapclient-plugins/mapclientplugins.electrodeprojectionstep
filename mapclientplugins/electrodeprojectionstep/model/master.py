@@ -4,7 +4,6 @@ from opencmiss.zinc.field import Field
 from opencmiss.zinc.glyph import Glyph
 from opencmiss.zinc.streamregion import StreaminformationRegion
 
-#from opencmiss.utils.zinc import define_standard_visualisation_tools
 from opencmiss.utils.zinc.general import define_standard_graphics_objects
 from opencmiss.utils.zinc.field import create_field_finite_element
 
