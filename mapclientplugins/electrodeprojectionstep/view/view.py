@@ -1,13 +1,12 @@
-
 import numpy as np
 from scipy.optimize import minimize
 
-from PySide import QtGui
+from PySide2 import QtWidgets
 
 from opencmiss.zinc.status import OK as ZINC_OK
 from opencmiss.zinc.node import Node
 from opencmiss.zinc.field import Field
-from opencmiss.zinchandlers.scenemanipulation import SceneManipulation
+from opencmiss.utils.zinc.handlers.scenemanipulation import SceneManipulation
 
 from mapclientplugins.electrodeprojectionstep.view.ui_electrodeprojectionwidget import Ui_ElectrodeProjectionWidget
 
@@ -15,7 +14,7 @@ PLAY_TEXT = 'Play'
 STOP_TEXT = 'Stop'
 
 
-class ElectrodeProjectionWidget(QtGui.QWidget):
+class ElectrodeProjectionWidget(QtWidgets.QWidget):
 
     def __init__(self, model, parent=None):
         super(ElectrodeProjectionWidget, self).__init__(parent)
@@ -98,7 +97,6 @@ class ElectrodeProjectionWidget(QtGui.QWidget):
 
 
 def _get_node_numpy_array(field_cache, field_module, nodes, coordinates):
-
     field_module.beginChange()
     node_iter = nodes.createNodeiterator()
     node = node_iter.next()
@@ -113,7 +111,6 @@ def _get_node_numpy_array(field_cache, field_module, nodes, coordinates):
 
 
 def _set_node_parameters(field_cache, field_module, nodes, coordinates, transformed_nodes, numpy_array, rigid=True):
-
     field_module.beginChange()
     node_iter = nodes.createNodeiterator()
     node = node_iter.next()

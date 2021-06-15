@@ -4,8 +4,8 @@ from opencmiss.zinc.field import Field
 from opencmiss.zinc.glyph import Glyph
 from opencmiss.zinc.streamregion import StreaminformationRegion
 
-from opencmiss.utils.zinc import define_standard_visualisation_tools
-from opencmiss.utils.zinc import create_finite_element_field
+from opencmiss.utils.zinc.general import define_standard_graphics_objects
+from opencmiss.utils.zinc.field import create_field_finite_element
 
 from sparc.electrodeprojection.meshprojection import MeshProjection
 
@@ -74,7 +74,8 @@ class ElectrodeProjectionModel(object):
         self._electrode_positions_on_plane = electrode_positions_on_plane
         self._image_dimensions = image_dimensions
         self._context = Context('projection')
-        define_standard_visualisation_tools(self._context)
+        #define_standard_visualisation_tools(self._context)
+        define_standard_graphics_objects(self._context)
 
         region_description = mesh_description.get_region_description()
         # scene_description = mesh_description.get_scene_description()
@@ -103,7 +104,7 @@ class ElectrodeProjectionModel(object):
     def _initialise(self):
         self._electrode_region = self._region.createChild('electrodes')
         field_module = self._electrode_region.getFieldmodule()
-        self._coordinate_field = create_finite_element_field(self._electrode_region)
+        self._coordinate_field = create_field_finite_element(self._electrode_region)
         self._scale_field = field_module.createFieldConstant([1.0, 1.0, self._mesh_projection.get_z_scale_factor()])
         self._offset_field = field_module.createFieldConstant([0.0, 0.0, self._mesh_projection.get_depth()])
         offset_coordinate_field = field_module.createFieldAdd(self._coordinate_field, self._offset_field)
@@ -213,4 +214,3 @@ def _create_data_point(coordinate_field, location):
     field_cache = field_module.createFieldcache()
     field_cache.setNode(node)
     coordinate_field.assignReal(field_cache, location)
-
