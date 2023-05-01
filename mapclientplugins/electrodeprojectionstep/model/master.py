@@ -1,11 +1,11 @@
 import os
-from opencmiss.zinc.context import Context
-from opencmiss.zinc.field import Field
-from opencmiss.zinc.glyph import Glyph
-from opencmiss.zinc.streamregion import StreaminformationRegion
+from cmlibs.zinc.context import Context
+from cmlibs.zinc.field import Field
+from cmlibs.zinc.glyph import Glyph
+from cmlibs.zinc.streamregion import StreaminformationRegion
 
-from opencmiss.utils.zinc.general import define_standard_graphics_objects
-from opencmiss.utils.zinc.field import create_field_finite_element
+from cmlibs.utils.zinc.general import define_standard_graphics_objects
+from cmlibs.utils.zinc.field import create_field_finite_element
 
 from sparc.electrodeprojection.meshprojection import MeshProjection
 
